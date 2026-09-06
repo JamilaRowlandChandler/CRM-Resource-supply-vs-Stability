@@ -17,9 +17,9 @@ from scipy.stats import binned_statistic
 ########## type checking ########
 
 if TYPE_CHECKING:
-    
-    sys.path.insert(0, "C:/Users/jamil/Documents/PhD/Code Repositories/Ecological-Dynamics-Consumer-Resource-Models" + \
-                        "/consumer_resource_modules")
+
+    import os
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
     from models import SL_CRM, SL_SI_CRM, SL_TL_CRM, ES_CRM, Hybrid_CRM
     from effective_LV_models import eLV_SL, gLV
     

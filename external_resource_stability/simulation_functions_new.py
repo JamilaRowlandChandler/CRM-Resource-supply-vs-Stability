@@ -21,7 +21,17 @@ from ast import literal_eval
 import re
 from json import dumps, loads
 
-sys.path.insert(0, 'C:/Users/jamil/Documents/PhD/Code Repositories/Ecological-Dynamics-Consumer-Resource-Models/consumer_resource_modules')
+abspath = os.path.abspath(__file__)
+file_directory_name = os.path.dirname(abspath)
+os.chdir(file_directory_name)
+
+repo_root = file_directory_name
+while not os.path.isdir(os.path.join(repo_root, '.git')):
+    repo_root = os.path.dirname(repo_root)
+
+data_directory = os.path.join(repo_root, 'Data')
+
+sys.path.insert(0, os.path.join(repo_root, 'consumer_resource_modules'))
 from models import Consumer_Resource_Model
 from community_level_properties import max_le
 
@@ -86,8 +96,7 @@ def CRM_across_parameter_space(parameter_sets : list[dict],
     
     # create the directory where the communities should be saved (if the directory
     #   doesn't already exist)
-    full_directory = "C:/Users/jamil/Documents/PhD/Data/" \
-                        + subdirectory
+    full_directory = os.path.join(data_directory, subdirectory)
     
     if not os.path.exists(full_directory):
         
@@ -390,14 +399,13 @@ def CRMs_create_and_save(subdirectory : str,
         
         case 'v1':
             
-            pickle_dump("C:/Users/jamil/Documents/PhD/Data/" + \
-                         subdirectory + "/" + filename + ".pkl",
+            pickle_dump(os.path.join(data_directory, subdirectory, filename + ".pkl"),
                          communities)
-        
+
         case 'v2':
-    
+
             save_models(communities,
-                        "C:/Users/jamil/Documents/PhD/Data/" + subdirectory,
+                        os.path.join(data_directory, subdirectory),
                         filename)
             
         case 'v3':
@@ -414,8 +422,7 @@ def CRMs_create_and_save(subdirectory : str,
                                                     init_class['model'],
                                                     growth_consumption_rates_args['method'])
             
-            df.to_csv("C:/Users/jamil/Documents/PhD/Data/" + \
-                         subdirectory + "/" + filename + ".csv")
+            df.to_csv(os.path.join(data_directory, subdirectory, filename + ".csv"))
             
     del communities 
    

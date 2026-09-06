@@ -3,6 +3,17 @@
 Created on Tue Feb 11 20:56:36 2025
 
 @author: jamil
+
+Small helpers (parameter_combinations, variable_fixed_parameters) for
+building parameter grids for stability_transitions/ simulation sweeps
+(e.g. every combination of rho and sigma), reused across this repo.
+
+NOTE: the four `self_limiting_*`/`externally_supplied_equations` modules
+imported below (the actual cavity-method self-consistency-equation solvers,
+as opposed to the equations solved in solve_sces_mathematica.nb) are not
+present in this repository, so importing this file as-is will currently
+raise ModuleNotFoundError. The two helper functions themselves don't depend
+on those modules.
 """
 
 # %%
@@ -21,9 +32,9 @@ from scipy.optimize import least_squares
 from scipy.optimize import basinhopping
 from scipy.optimize import dual_annealing
 
-os.chdir('C:/Users/jamil/Documents/PhD/Code Repositories/Ecological-Dynamics-Consumer-Resource-Models/cavity_method_functions')
-
-#"C:\Users\jamil\Documents\PhD\Code Repositories\Ecological-Dynamics-Consumer-Resource-Models\Consumer-Resource Models\cavity_method_functions"
+abspath = os.path.abspath(__file__)
+file_directory_name = os.path.dirname(abspath)
+os.chdir(file_directory_name)
 
 import self_limiting_rho_equations as slr
 import externally_supplied_equations as es

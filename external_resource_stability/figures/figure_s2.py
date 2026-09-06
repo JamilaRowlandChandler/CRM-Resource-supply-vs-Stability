@@ -18,8 +18,14 @@ abspath = os.path.abspath(__file__)
 file_directory_name = os.path.dirname(abspath)
 os.chdir(file_directory_name)
 
-sys.path.insert(0, file_directory_name.removesuffix("\\external_resource_stability\\figures") + \
-                "\\consumer_resource_modules")
+repo_root = file_directory_name
+while not os.path.isdir(os.path.join(repo_root, '.git')):
+    repo_root = os.path.dirname(repo_root)
+
+data_directory = os.path.join(repo_root, 'Data')
+figures_directory = os.path.join(repo_root, 'Figures')
+
+sys.path.insert(0, os.path.join(repo_root, 'consumer_resource_modules'))
 from models import Consumer_Resource_Model
 
 # %%
@@ -37,8 +43,8 @@ def load_clean_simulations(data_location):
         
         return np.count_nonzero(x < stability_threshold)/len(x)
     
-    full_location = "C:/Users/jamil/Documents/PhD/Data/external_resource_stability/simulations/" + \
-                        data_location
+    full_location = os.path.join(data_directory, 'external_resource_stability',
+                                 'simulations', data_location)
     
     if full_location.endswith(".csv"):
     
@@ -132,9 +138,11 @@ axs["sim_C"].plot(crm_community.ODE_sols[0].t,
 axs["sim_R"].set_xlim([2000, 7000])
 axs["sim_C"].set_xlim([2000, 7000])
 
-plt.savefig("C:/Users/jamil/Documents/PhD/Figures/externally_supplied_resources/external_supply_chaos.png",
+plt.savefig(os.path.join(figures_directory, 'externally_supplied_resources',
+                         'external_supply_chaos.png'),
             dpi=300, bbox_inches='tight')
-plt.savefig("C:/Users/jamil/Documents/PhD/Figures/externally_supplied_resources/external_supply_chaos.svg",
+plt.savefig(os.path.join(figures_directory, 'externally_supplied_resources',
+                         'external_supply_chaos.svg'),
             bbox_inches='tight')
 
 plt.show()

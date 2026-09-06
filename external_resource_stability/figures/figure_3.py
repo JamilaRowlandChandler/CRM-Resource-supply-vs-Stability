@@ -15,18 +15,26 @@ import seaborn as sns
 
 # %%
 
-os.chdir('C:/Users/jamil/Documents/PhD/Code Repositories/Ecological-Dynamics-Consumer-Resource-Models/external_resource_stability/figures')
+abspath = os.path.abspath(__file__)
+file_directory_name = os.path.dirname(abspath)
+os.chdir(file_directory_name)
 
-sys.path.insert(0, "C:/Users/jamil/Documents/PhD/Code Repositories/Ecological-Dynamics-Consumer-Resource-Models/" + \
-                    "external_resource_stability")
+repo_root = file_directory_name
+while not os.path.isdir(os.path.join(repo_root, '.git')):
+    repo_root = os.path.dirname(repo_root)
+
+data_directory = os.path.join(repo_root, 'Data')
+figures_directory = os.path.join(repo_root, 'Figures')
+
+sys.path.insert(0, os.path.join(repo_root, 'external_resource_stability'))
 from simulation_functions_new import le_pivot_r
 
 # %%
 
 def load_clean_simulations(data_location):
     
-    full_location = "C:/Users/jamil/Documents/PhD/Data/external_resource_stability/simulations/" + \
-                        data_location
+    full_location = os.path.join(data_directory, 'external_resource_stability',
+                                 'simulations', data_location)
     
     if full_location.endswith(".csv"):
     
@@ -228,9 +236,11 @@ def influx_figure(stability_sli,
                                example_sensitivity,
                                axs["Temp"])
     
-    plt.savefig("C:/Users/jamil/Documents/PhD/Figures/externally_supplied_resources/simulations_influx.png",
+    plt.savefig(os.path.join(figures_directory, 'externally_supplied_resources',
+                             'simulations_influx.png'),
                 bbox_inches='tight')
-    plt.savefig("C:/Users/jamil/Documents/PhD/Figures/externally_supplied_resources/simulations_influx.svg",
+    plt.savefig(os.path.join(figures_directory, 'externally_supplied_resources',
+                             'simulations_influx.svg'),
                 bbox_inches='tight')
                  
     plt.show()
@@ -275,7 +285,9 @@ feasibility_ir = feasibility_diagram(simulations_ir,
                                              "rho",
                                              "b_exponent")
 
-example_sensitivities = pd.read_pickle("C:/Users/jamil/Documents/PhD/Data/external_resource_stability/simulations/rho_influx_example_sensitivities_cusp_2.pkl")
+example_sensitivities = pd.read_pickle(os.path.join(data_directory, 'external_resource_stability',
+                                                    'simulations',
+                                                    'rho_influx_example_sensitivities_cusp_2.pkl'))
 example_df = pd.DataFrame([{key : sensitivities_dict[key] 
                             for key in ['b', 'rho', 'max peak', 'max. le']}
                            for sensitivities_dict in example_sensitivities])
