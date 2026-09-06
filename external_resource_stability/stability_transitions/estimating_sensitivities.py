@@ -20,17 +20,19 @@ abspath = os.path.abspath(__file__)
 file_directory_name = os.path.dirname(abspath)
 os.chdir(file_directory_name)
 
-sys.path.insert(0, file_directory_name.removesuffix("\\external_resource_stability\\stability_transitions") + \
-                "\\consumer_resource_modules")
+repo_root = file_directory_name
+while not os.path.isdir(os.path.join(repo_root, '.git')):
+    repo_root = os.path.dirname(repo_root)
+
+sys.path.insert(0, os.path.join(repo_root, 'consumer_resource_modules'))
 from models import Consumer_Resource_Model
 from community_level_properties import max_le
 
-sys.path.insert(0,  file_directory_name.removesuffix("\\external_resource_stability\\stability_transitions") + \
-                "\\cavity_method_functions")
+sys.path.insert(0, os.path.join(repo_root, 'cavity_method_functions'))
 from self_consistency_equation_functions import parameter_combinations
 
-sys.path.insert(0,  file_directory_name.removesuffix("\\stability_transitions"))
-from simulation_functions_new import pickle_dump 
+sys.path.insert(0, os.path.join(repo_root, 'external_resource_stability'))
+from simulation_functions_new import pickle_dump
 
 # %%
 
@@ -65,8 +67,8 @@ def example_sensitivities(rhos,
                                                    rhos,
                                                    no_communities=80)
 
-    pickle_dump("C:/Users/jamil/Documents/PhD/Data/external_resource_stability/simulations/" + \
-                filename + ".pkl",
+    pickle_dump(os.path.join(repo_root, 'Data', 'external_resource_stability',
+                             'simulations', filename + ".pkl"),
                 example_sensitivities)
 
 # %%
@@ -170,7 +172,8 @@ rho_influx_df['log_dRdx2'] = np.log10(np.select([rho_influx_df['dRdx2'] == 0,
                                                  rho_influx_df['dRdx2']],
                                                 0))
 
-rho_influx_df.to_csv("C:/Users/jamil/Documents/PhD/Data/external_resource_stability/simulations/rho_influx_sensitivities.csv")
+rho_influx_df.to_csv(os.path.join(repo_root, 'Data', 'external_resource_stability',
+                                  'simulations', 'rho_influx_sensitivities.csv'))
 
 # %%
 

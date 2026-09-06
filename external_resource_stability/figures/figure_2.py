@@ -14,18 +14,26 @@ from scipy.optimize import curve_fit
 from matplotlib import pyplot as plt
 from matplotlib.colors import colorConverter, LinearSegmentedColormap
 
-os.chdir('C:/Users/jamil/Documents/PhD/Code Repositories/Ecological-Dynamics-Consumer-Resource-Models/external_resource_stability/figures')
+abspath = os.path.abspath(__file__)
+file_directory_name = os.path.dirname(abspath)
+os.chdir(file_directory_name)
 
-sys.path.insert(0, "C:/Users/jamil/Documents/PhD/Code Repositories/Ecological-Dynamics-Consumer-Resource-Models/" + \
-                    "external_resource_stability")
+repo_root = file_directory_name
+while not os.path.isdir(os.path.join(repo_root, '.git')):
+    repo_root = os.path.dirname(repo_root)
+
+data_directory = os.path.join(repo_root, 'Data')
+figures_directory = os.path.join(repo_root, 'Figures')
+
+sys.path.insert(0, os.path.join(repo_root, 'external_resource_stability'))
 from simulation_functions_new import le_pivot_r
 
 # %%
 
 def load_clean_simulations(data_location):
     
-    full_location = "C:/Users/jamil/Documents/PhD/Data/external_resource_stability/simulations/" + \
-                        data_location
+    full_location = os.path.join(data_directory, 'external_resource_stability',
+                                 'simulations', data_location)
     
     if full_location.endswith(".csv"):
     
@@ -55,8 +63,8 @@ def load_clean_simulations(data_location):
 
 def load_clean_sces(filename):
     
-    sces = pd.read_csv("C:/Users/jamil/Documents/PhD/Data/external_resource_stability/self_consistency_equations/" + \
-                       filename + ".csv",
+    sces = pd.read_csv(os.path.join(data_directory, 'external_resource_stability',
+                                    'self_consistency_equations', filename + ".csv"),
                        na_values=["Missing[Failed]", "Missing[]"])
     sces = sces.apply(pd.to_numeric, errors="coerce")
     
@@ -353,9 +361,11 @@ def compare_abiotic_biotic(df_ab,
         
         example_dynamics(dynamics[0], [axs[axR], axs[axC]])
 
-    plt.savefig("C:/Users/jamil/Documents/PhD/Figures/externally_supplied_resources/simulations_rho_sigma_large_mu.png",
+    plt.savefig(os.path.join(figures_directory, 'externally_supplied_resources',
+                             'simulations_rho_sigma_large_mu.png'),
                 bbox_inches='tight')
-    plt.savefig("C:/Users/jamil/Documents/PhD/Figures/externally_supplied_resources/simulations_rho_sigma_large_mu.svg",
+    plt.savefig(os.path.join(figures_directory, 'externally_supplied_resources',
+                             'simulations_rho_sigma_large_mu.svg'),
                 bbox_inches='tight')
                  
     plt.show()
@@ -368,12 +378,14 @@ simulations_biotic, stability_biotic = load_clean_simulations("rho_sigma_mu50_sl
 sces_abiotic = load_clean_sces("rho_sigma_newprotocol_upd4")
 sces_abiotic = np.round(sces_abiotic, 7)
 
-stable_es = pd.read_pickle("C:/Users/jamil/Documents/PhD/Data/external_resource_stability/simulations/rho_sigma_mu50_es_examplesim/simulations_1.0_6.0.pkl")
-infeasible_es = pd.read_pickle("C:/Users/jamil/Documents/PhD/Data/external_resource_stability/simulations/rho_sigma_mu50_es_examplesim/simulations_0.2_6.0.pkl")
+simulations_directory = os.path.join(data_directory, 'external_resource_stability', 'simulations')
 
-stable_sl = pd.read_pickle("C:/Users/jamil/Documents/PhD/Data/external_resource_stability/simulations/rho_sigma_mu50_sl_examplesim/simulations_1.0_6.0.pkl")
-chaotic_sl = pd.read_pickle("C:/Users/jamil/Documents/PhD/Data/external_resource_stability/simulations/rho_sigma_mu50_sl_examplesim/simulations_0.8_6.0.pkl")
-infeasible_sl = pd.read_pickle("C:/Users/jamil/Documents/PhD/Data/external_resource_stability/simulations/rho_sigma_mu50_sl_examplesim/simulations_0.2_6.0.pkl")
+stable_es = pd.read_pickle(os.path.join(simulations_directory, 'rho_sigma_mu50_es_examplesim', 'simulations_1.0_6.0.pkl'))
+infeasible_es = pd.read_pickle(os.path.join(simulations_directory, 'rho_sigma_mu50_es_examplesim', 'simulations_0.2_6.0.pkl'))
+
+stable_sl = pd.read_pickle(os.path.join(simulations_directory, 'rho_sigma_mu50_sl_examplesim', 'simulations_1.0_6.0.pkl'))
+chaotic_sl = pd.read_pickle(os.path.join(simulations_directory, 'rho_sigma_mu50_sl_examplesim', 'simulations_0.8_6.0.pkl'))
+infeasible_sl = pd.read_pickle(os.path.join(simulations_directory, 'rho_sigma_mu50_sl_examplesim', 'simulations_0.2_6.0.pkl'))
 
 feasibility_abiotic = feasible_region(simulations_abiotic)
 feasibility_biotic = feasible_region(simulations_biotic)

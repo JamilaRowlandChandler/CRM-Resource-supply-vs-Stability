@@ -19,11 +19,16 @@ abspath = os.path.abspath(__file__)
 file_directory_name = os.path.dirname(abspath)
 os.chdir(file_directory_name)
 
-sys.path.insert(0, file_directory_name.removesuffix("\\stability_transitions"))
+repo_root = file_directory_name
+while not os.path.isdir(os.path.join(repo_root, '.git')):
+    repo_root = os.path.dirname(repo_root)
+
+data_directory = os.path.join(repo_root, 'Data')
+
+sys.path.insert(0, os.path.join(repo_root, 'external_resource_stability'))
 from simulation_functions_new import CRM_across_parameter_space
 
-sys.path.insert(0,  file_directory_name.removesuffix("\\external_resource_stability\\stability_transitions") + \
-                "\\cavity_method_functions")
+sys.path.insert(0, os.path.join(repo_root, 'cavity_method_functions'))
 from self_consistency_equation_functions import variable_fixed_parameters
 
 # %%
@@ -81,8 +86,8 @@ def load_clean_simulations(data_location):
         
         return np.count_nonzero(x < stability_threshold)/len(x)
     
-    full_location = "C:/Users/jamil/Documents/PhD/Data/external_resource_stability/simulations/" + \
-                        data_location
+    full_location = os.path.join(data_directory, 'external_resource_stability',
+                                 'simulations', data_location)
     
     if full_location.endswith(".csv"):
     

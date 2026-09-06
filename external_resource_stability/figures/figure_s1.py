@@ -18,18 +18,26 @@ import matplotlib.patheffects as patheffects
 from matplotlib import colors
 
 
-os.chdir('C:/Users/jamil/Documents/PhD/Code Repositories/Ecological-Dynamics-Consumer-Resource-Models/external_resource_stability/figures')
+abspath = os.path.abspath(__file__)
+file_directory_name = os.path.dirname(abspath)
+os.chdir(file_directory_name)
 
-sys.path.insert(0, "C:/Users/jamil/Documents/PhD/Code Repositories/Ecological-Dynamics-Consumer-Resource-Models/" + \
-                    "external_resource_stability")
+repo_root = file_directory_name
+while not os.path.isdir(os.path.join(repo_root, '.git')):
+    repo_root = os.path.dirname(repo_root)
+
+data_directory = os.path.join(repo_root, 'Data')
+figures_directory = os.path.join(repo_root, 'Figures')
+
+sys.path.insert(0, os.path.join(repo_root, 'external_resource_stability'))
 from simulation_functions_new import le_pivot_r
 
 # %%
 
 def load_clean_simulations(data_location):
     
-    full_location = "C:/Users/jamil/Documents/PhD/Data/external_resource_stability/simulations/" + \
-                        data_location
+    full_location = os.path.join(data_directory, 'external_resource_stability',
+                                 'simulations', data_location)
     
     if full_location.endswith(".csv"):
     
@@ -54,8 +62,8 @@ def load_clean_simulations(data_location):
 
 def load_clean_sces(filename):
     
-    sces = pd.read_csv("C:/Users/jamil/Documents/PhD/Data/external_resource_stability/self_consistency_equations/" + \
-                       filename + ".csv",
+    sces = pd.read_csv(os.path.join(data_directory, 'external_resource_stability',
+                                    'self_consistency_equations', filename + ".csv"),
                        na_values=["Missing[Failed]", "Missing[]"])
     sces = np.round(sces.apply(pd.to_numeric, errors="coerce"), 7)
     
@@ -406,9 +414,11 @@ def compare_abiotic_biotic(stability_ab,
                        example_rho,
                        axs["P(stable)A"], axs["SC_A"], axs['SC_B'])
     
-    plt.savefig("C:/Users/jamil/Documents/PhD/Figures/externally_supplied_resources/simulations_analytics_rho_sigma_small_mu.png",
+    plt.savefig(os.path.join(figures_directory, 'externally_supplied_resources',
+                             'simulations_analytics_rho_sigma_small_mu.png'),
                 bbox_inches='tight')
-    plt.savefig("C:/Users/jamil/Documents/PhD/Figures/externally_supplied_resources/simulations_analytics_rho_sigma_small_mu.svg",
+    plt.savefig(os.path.join(figures_directory, 'externally_supplied_resources',
+                             'simulations_analytics_rho_sigma_small_mu.svg'),
                 bbox_inches='tight')
                  
     plt.show()
@@ -592,9 +602,11 @@ def abiotic_stability_cond(stability_ab,
                         sigmas,
                         ax2)
     
-    plt.savefig("C:/Users/jamil/Documents/PhD/Figures/externally_supplied_resources/simulations_analytics_rho_sigma_small_mu.png",
+    plt.savefig(os.path.join(figures_directory, 'externally_supplied_resources',
+                             'simulations_analytics_rho_sigma_small_mu.png'),
                 bbox_inches='tight')
-    plt.savefig("C:/Users/jamil/Documents/PhD/Figures/externally_supplied_resources/simulations_analytics_rho_sigma_small_mu.svg",
+    plt.savefig(os.path.join(figures_directory, 'externally_supplied_resources',
+                             'simulations_analytics_rho_sigma_small_mu.svg'),
                 bbox_inches='tight')
                  
     plt.show()

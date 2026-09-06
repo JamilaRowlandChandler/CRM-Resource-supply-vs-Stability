@@ -21,9 +21,9 @@ from scipy.optimize import least_squares
 from scipy.optimize import basinhopping
 from scipy.optimize import dual_annealing
 
-os.chdir('C:/Users/jamil/Documents/PhD/Code Repositories/Ecological-Dynamics-Consumer-Resource-Models/cavity_method_functions')
-
-#"C:\Users\jamil\Documents\PhD\Code Repositories\Ecological-Dynamics-Consumer-Resource-Models\Consumer-Resource Models\cavity_method_functions"
+abspath = os.path.abspath(__file__)
+file_directory_name = os.path.dirname(abspath)
+os.chdir(file_directory_name)
 
 import self_limiting_rho_equations as slr
 import externally_supplied_equations as es
