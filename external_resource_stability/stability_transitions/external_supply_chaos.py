@@ -122,23 +122,5 @@ migration(migration_exponents,
           no_communities = 20,
           t_end = 1000,
           no_init_conds = 1)
-
-# %%
-
-simulations, stable_feasible = load_clean_simulations("influx_outflux")
-
-# %%
-
-fig, ax = plt.subplots(1, 1)
-
-sns.lineplot(x = np.log10(stable_feasible['influx']),
-             y = stable_feasible['P(Feasible)'],
-             color = 'gray', ax = ax)
-
-sns.lineplot(x = np.log10(stable_feasible['influx']),
-             y = stable_feasible['P(Stable)'],
-             color = 'black', ax = ax)
-
-plt.show()
     
     

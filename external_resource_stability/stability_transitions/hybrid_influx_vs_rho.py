@@ -144,20 +144,6 @@ system_size = 150
 # %%
 
 p1_p2("Hybrid resource supply",
-      ('exponent_b', [-5, 0.0]),
-      ('exponent_a', resource_inhibitions),
-      dict(mu = mu, sigma = sigma, rho = 0.8,
-           d = d,
-           o = o,
-           M = system_size, S = system_size),
-    "external_resource_stability/simulations/hybrid_influx_resourceinhibition",
-    no_communities = 20,
-    t_end = 1000,
-    no_init_conds = 1)
-
-# %%
-
-p1_p2("Hybrid resource supply",
       ('exponent_b', bs),
       ('rho', rhos),
       dict(mu = mu, sigma = sigma,

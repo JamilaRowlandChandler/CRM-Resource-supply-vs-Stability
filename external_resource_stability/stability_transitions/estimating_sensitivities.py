@@ -174,44 +174,5 @@ rho_influx_df.to_csv("C:/Users/jamil/Documents/PhD/Data/external_resource_stabil
 
 # %%
 
-example_sensitivities(np.array([0.85, 0.85, 0.8, 0.75, 0.7, 0.55, 0.4]),
-                      "rho_influx_example_sensitivities_mid")
-
-# %%
-
 example_sensitivities(np.array([0.9, 0.875, 0.85, 0.8, 0.725, 0.6, 0.5]), #np.array([0.9, 0.9, 0.9, 0.85, 0.75, 0.7, 0.55]),
                       "rho_influx_example_sensitivities_cusp_2")
-
-# %%
-
-sensitivities_df = pd.read_csv("C:/Users/jamil/Documents/PhD/Data/external_resource_stability/simulations/rho_influx_sensitivities.csv")
-sensitivities_df['log_dRdx2'] = np.log10(np.select([sensitivities_df['dRdx2'] == 0,
-                                                    sensitivities_df['dRdx2'] > 0],
-                                                   [1e-8,
-                                                    sensitivities_df['dRdx2']],
-                                                   np.nan))
-
-sensitivities_pivot = pd.pivot_table(sensitivities_df.mask(sensitivities_df['max. le'] < 0),
-                                     index = 'rho',
-                                     columns = 'b',
-                                     values = 'log_dRdx2',
-                                     aggfunc = 'median')
-
-stability_pivot = pd.pivot_table(sensitivities_df,
-                                 index = 'rho',
-                                 columns = 'b',
-                                 values = 'max. le',
-                                 aggfunc = lambda x : np.count_nonzero(x < 0)/len(x))
-
-# %%
-
-print(stability_pivot)
-
-print(sensitivities_pivot.where((stability_pivot >= 0.75) & 
-                                (stability_pivot <= 0.95)))
-
-
-
-#sensitivities_stability  = stability_diagram(sensitivities_df.mask(sensitivities_df['max. le'] < 0),
-#                                             index = 'rho',
-#                                             columns = 'b')

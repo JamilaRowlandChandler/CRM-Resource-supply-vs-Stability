@@ -19,7 +19,7 @@ os.chdir('C:/Users/jamil/Documents/PhD/Code Repositories/Ecological-Dynamics-Con
 
 sys.path.insert(0, "C:/Users/jamil/Documents/PhD/Code Repositories/Ecological-Dynamics-Consumer-Resource-Models/" + \
                     "external_resource_stability")
-from simulation_functions import le_pivot_r
+from simulation_functions_new import le_pivot_r
 
 # %%
 
@@ -275,33 +275,12 @@ feasibility_ir = feasibility_diagram(simulations_ir,
                                              "rho",
                                              "b_exponent")
 
-# influx vs sensitivities to community regulation
-
-#sensitivities_df = load_clean_simulations("rho_influx_sensitivities.csv")
-#sensitivities_df['log_dRdx2'] = np.log10(np.select([sensitivities_df['dRdx2'] == 0,
-#                                                    sensitivities_df['dRdx2'] > 0],
-#                                                   [1e-8,
-#                                                    sensitivities_df['dRdx2']],
-#                                                   np.nan))
-
-#sensitivities_pivot = pd.pivot_table(sensitivities_df,
-#                                     index = 'rho',
-#                                     columns = 'b',
-#                                     values = 'log_dRdx2',
-#                                     aggfunc = 'median')
-
-#sensitivities_stability  = stability_diagram(sensitivities_df.mask(sensitivities_df['max. le'] < 0),
-#                                             index = 'rho',
-#                                             columns = 'b')
-
 example_sensitivities = pd.read_pickle("C:/Users/jamil/Documents/PhD/Data/external_resource_stability/simulations/rho_influx_example_sensitivities_cusp_2.pkl")
 example_df = pd.DataFrame([{key : sensitivities_dict[key] 
                             for key in ['b', 'rho', 'max peak', 'max. le']}
                            for sensitivities_dict in example_sensitivities])
-#example_df['max peak'] += np.nanmin(np.concatenate([es['dRdx2']
-#                                                    for es in example_sensitivities]))
 
-example_df.loc[example_df['max peak'] == 0, 'max peak']  = 0.01
+example_df.loc[example_df['max peak'] == 0, 'max peak'] = 0.01
 
 # %%
 

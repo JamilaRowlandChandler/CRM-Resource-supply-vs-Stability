@@ -22,7 +22,7 @@ os.chdir('C:/Users/jamil/Documents/PhD/Code Repositories/Ecological-Dynamics-Con
 
 sys.path.insert(0, "C:/Users/jamil/Documents/PhD/Code Repositories/Ecological-Dynamics-Consumer-Resource-Models/" + \
                     "external_resource_stability")
-from simulation_functions import le_pivot_r
+from simulation_functions_new import le_pivot_r
 
 # %%
 
@@ -625,61 +625,3 @@ compare_abiotic_biotic(stability_abiotic, # .mask(feasibility_abiotic < 1),
 abiotic_stability_cond(stability_abiotic,
                        sces_abiotic,
                        example_rho=0.8)
-
-# %%
-
-def chiR_approx(x):
-    
-    gamma = x['gamma']
-    sigma_c = x['sigma_c']
-    sigma_g = x['sigma_g']
-    rho = x['rho']
-    vN = x['v_N']
-    
-    mu_o = x['mu_o']
-    mu_c = x['mu_c']
-    Nmean = x['N_mean']
-    
-    return (-gamma/(2*sigma_c*sigma_g*rho*vN))*(1 - (mu_o + mu_c*Nmean/gamma)/((mu_o + mu_c*Nmean/gamma)**2 - 4*sigma_c*sigma_g*rho*vN/gamma)**0.5)
-
-sces_abiotic['chi_R_approx'] = sces_abiotic.apply(chiR_approx, axis = 1)
-
-sns.scatterplot((sces_abiotic[sces_abiotic['loss'] < 1e-4]),
-                x = 'chi_R', y = 'chi_R_approx')
-plt.show()
-
-# %%
-
-def first_denom_term(x):
-    
-    gamma = x['gamma']
-    mu_o = x['mu_o']
-    mu_c = x['mu_c']
-    Nmean = x['N_mean']
-    
-    return np.abs(mu_o + mu_c*Nmean/gamma)
-
-def second_denom_term(x):
-    
-    #gamma = x['gamma']
-    #sigma_c = x['sigma_c']
-    #sigma_g = x['sigma_g']
-    #rho = x['rho']
-    #vN = x['v_N']
-    #mu_b = x['mu_b']
-    
-    #return -4*sigma_g*sigma_c*rho*vN*mu_b/gamma
-    
-    gamma = x['gamma']
-    sigma_c = x['sigma_c']
-    Nfluct = x['q_N']
-    sigma_o = x['sigma_o']
-    
-    return np.abs((sigma_c**2 * Nfluct)/gamma + sigma_o**2)
-
-sces_abiotic['first denom'] = sces_abiotic.apply(first_denom_term, axis = 1)
-sces_abiotic['second denom'] = sces_abiotic.apply(second_denom_term, axis = 1)
-
-sns.scatterplot(sces_abiotic[sces_abiotic['loss'] < 1e-4],
-                x = 'first denom', y = 'second denom')
-plt.show()

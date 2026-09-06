@@ -18,7 +18,7 @@ os.chdir('C:/Users/jamil/Documents/PhD/Code Repositories/Ecological-Dynamics-Con
 
 sys.path.insert(0, "C:/Users/jamil/Documents/PhD/Code Repositories/Ecological-Dynamics-Consumer-Resource-Models/" + \
                     "external_resource_stability")
-from simulation_functions import le_pivot_r
+from simulation_functions_new import le_pivot_r
 
 # %%
 
@@ -389,19 +389,3 @@ compare_abiotic_biotic(simulations_abiotic,
                        [stable_es, infeasible_es,
                         stable_sl, chaotic_sl, infeasible_sl],
                        sces_abiotic)
-
-# %%
-
-example_rho = 0.7
-
-sces_subset = sces_abiotic.iloc[np.where((np.round(sces_abiotic['rho'], 4) == example_rho) & \
-                                 (np.isnan(sces_abiotic['loss']) == False))]
-
-dfl = pd.melt(sces_subset[['sigma_c', 'Stability Term', 'Packing ratio']], ['sigma_c'])
-
-sns.lineplot(dfl, x = 'sigma_c', y = 'value', hue = 'variable',
-             linewidth = 2.5, marker = 'o', markersize = 8,
-             palette = sns.color_palette(['#00557aff', '#3dc27aff'], 2),
-             zorder = 10, markeredgewidth = 0.4, markeredgecolor = 'black')
-plt.show()
-
