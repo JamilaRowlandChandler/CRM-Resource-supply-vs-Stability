@@ -4,12 +4,11 @@
 
 ### `consumer_resource_modules/`
 Core consumer-resource model (CRM) classes and shared utilities, used by everything else in this repo.
-- `models.py` — the CRM classes themselves (self-limiting, externally-supplied, hybrid, self-inhibiting, multi-trophic and "leached" resource supply), plus the `Consumer_Resource_Model()` wrapper used to construct them.
+- `models.py` — the CRM classes themselves (self-limiting, externally-supplied and hybrid resource supply), plus the `Consumer_Resource_Model()` wrapper used to construct them.
 - `parameters.py` — generates growth/consumption rates and other model parameters (e.g. the `rho`-correlated growth-consumption coupling).
 - `differential_equations.py` — shared simulation/ODE-solving logic mixed into the model classes.
 - `initial_abundances.py` — generates initial species/resource abundances for simulations.
 - `community_level_properties.py` — post-simulation community statistics (survival fractions, moments, the resource-sensitivity/"cusp" diagnostic, max. Lyapunov exponent via `max_le`).
-- `effective_LV_models.py` — maps CRM communities onto an effective Lotka-Volterra (eLV) representation.
 
 ### `cavity_method_functions/`
 - `self_consistency_equation_functions.py` — helpers (`parameter_combinations`, `variable_fixed_parameters`) for building parameter grids for the simulation sweeps below. The cavity-method self-consistency-equation solvers themselves are solved in Mathematica (see `cavity_solutions/`), not here.
