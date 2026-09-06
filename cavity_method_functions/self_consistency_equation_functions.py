@@ -8,12 +8,6 @@ Small helpers (parameter_combinations, variable_fixed_parameters) for
 building parameter grids for stability_transitions/ simulation sweeps
 (e.g. every combination of rho and sigma), reused across this repo.
 
-NOTE: the four `self_limiting_*`/`externally_supplied_equations` modules
-imported below (the actual cavity-method self-consistency-equation solvers,
-as opposed to the equations solved in solve_sces_mathematica.nb) are not
-present in this repository, so importing this file as-is will currently
-raise ModuleNotFoundError. The two helper functions themselves don't depend
-on those modules.
 """
 
 # %%
@@ -23,23 +17,11 @@ on those modules.
 import numpy as np
 import numpy.typing as npt
 from typing import Union, Literal
-import pandas as pd
 import os
-from tqdm import tqdm
-from inspect import signature
-
-from scipy.optimize import least_squares
-from scipy.optimize import basinhopping
-from scipy.optimize import dual_annealing
 
 abspath = os.path.abspath(__file__)
 file_directory_name = os.path.dirname(abspath)
 os.chdir(file_directory_name)
-
-import self_limiting_rho_equations as slr
-import externally_supplied_equations as es
-import self_limiting_gc_c_finite_equations as slgcM
-import self_limiting_g_cg_equations as slcg
 
 # %% 
 
